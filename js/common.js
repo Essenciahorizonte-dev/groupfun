@@ -128,6 +128,10 @@
 
   /* ---------- Cabeçalho e rodapé ---------- */
   function renderChrome(active) {
+    /* Endereço absoluto do catálogo, calculado a partir de onde está o common.js (funciona em qualquer página/pasta). */
+    var self = document.querySelector('script[src*="js/common.js"]');
+    var root = self && self.src ? self.src.replace(/js\/common\.js.*$/, "") : "";
+    var cartHref = root + "catalogo.html?cart=1";
     var links = [["index.html", "Início"], ["catalogo.html", "Catálogo"], ["contacto.html", "Contacto"]];
     var nav = links.map(function (l) {
       return '<a href="' + l[0] + '"' + (l[0] === active ? ' aria-current="page"' : "") + ">" + l[1] + "</a>";
@@ -136,7 +140,7 @@
       '<div class="wrap hd-in"><a class="logo" href="index.html" aria-label="GROUPFUN — início"><span class="logo-gf">GF</span><span class="logo-t">GROUPFUN</span></a>' +
       '<button class="burger" type="button" aria-expanded="false" aria-controls="nav">Menu</button>' +
       '<nav id="nav" class="nav" aria-label="Principal">' + nav + "</nav>" +
-      '<a class="hd-cart" id="hd-cart" href="catalogo.html?cart=1" aria-label="Ver a minha encomenda">' +
+      '<a class="hd-cart" id="hd-cart" href="' + cartHref + '" aria-label="Ver a minha encomenda">' +
       '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h9.3a1 1 0 0 0 1-.8L21 7H6"/></svg>' +
       '<span class="hd-cart-n" id="hd-cart-n" hidden>0</span></a></div>';
     document.getElementById("site-footer").innerHTML =
@@ -206,3 +210,4 @@ window.addEventListener("resize", function () {
 
   window.GF = Object.assign(api, { setCartBadge: setCartBadge, cartCountFromStorage: cartCountFromStorage, C: C, sb: sb, imgUrl: imgUrl, loadStore: loadStore, renderChrome: renderChrome });
 })();
+    
