@@ -37,23 +37,42 @@
     });
   }
 
+  /* ---------- Fotografias e cores ---------- */
+
+  function getProductImages(p) {
+    return (p.images || []).filter(function (im) {
+      return im && im.path && im.color;
+    });
+  }
+
+  function getProductColors(p) {
+    var colors = [];
+
+    getProductImages(p).forEach(function (im) {
+      if (colors.indexOf(im.color) < 0) {
+        colors.push(im.color);
+      }
+    });
+
+    return colors;
+  }
+
   /* ---------- Cartões ---------- */
 
   function card(p) {
-    var firstColor = p.colors[0];
-
-    var first = p.images.find(function (im) {
-      return im.color === firstColor;
-    }) || p.images[0];
+    var images = getProductImages(p);
+    var colorsList = getProductColors(p);
+    var firstColor = colorsList[0] || "";
+    var first = images[0];
 
     var media = first
       ? '<img src="' + esc(G.imgUrl(first.path)) + '" alt="' +
         esc(p.name) + '" loading="lazy">'
       : '<div class="noimg">Sem fotografia</div>';
 
-    var colors = p.colors.length
+    var colors = colorsList.length
       ? '<div class="sw" role="group" aria-label="Cor">' +
-        p.colors.map(function (c, i) {
+        colorsList.map(function (c, i) {
           return '<button type="button" class="sw-b" data-color="' +
             esc(c) + '" aria-pressed="' + (i === 0) +
             '" title="' + esc(c) + '" style="--c:' +
@@ -61,7 +80,7 @@
             '<span class="sr">' + esc(c) + '</span></button>';
         }).join("") +
         '</div><p class="small sel-color">' +
-        esc(firstColor || "") + "</p>"
+        esc(firstColor) + "</p>"
       : "";
 
     var sizes = p.sizes.length
@@ -92,120 +111,94 @@
       "</div></article>";
   }
 
-  /* ---------- Apresentação das fotografias ---------- */
+  /* ---------- Troca de fotografias ---------- */
 
-  function showSlide(el, slideIndex) {
+  function showSlide(el, index) {
     if (!el || !el._gfSlides || !el._gfSlides.length) return;
 
     var p = prod(el.dataset.id);
     if (!p) return;
 
-    var slide = el._gfSlides[slideIndex];
+    var slide = el._gfSlides[index];
     if (!slide) return;
 
-    el._gfSlideIndex = slideIndex;
+    el._gfSlideIndex = index;
 
-    var color = slide.color;
-
-    /* Atualizar a bolinha da cor apresentada */
-    el.querySelectorAll(".sw-b").forEach(function (b) {
-      b.setAttribute(
-        "aria-pressed",
-        String(b.dataset.color === color)
-      );
-    });
-
-    /* Atualizar fotografia */
     var img = el.querySelector(".card-img img");
 
     if (img) {
-      var newUrl = G.imgUrl(slide.path);
-
-      if (img.src !== newUrl) {
-        img.src = newUrl;
-      }
-
-      img.alt = p.name + " - " + color;
+      var url = G.imgUrl(slide.path);
+      if (img.src !== url) img.src = url;
+      img.alt = p.name + " - " + slide.color;
     }
 
-    /* Atualizar nome da cor */
+    el.querySelectorAll(".sw-b").forEach(function (b) {
+      b.setAttribute(
+        "aria-pressed",
+        String(b.dataset.color === slide.color)
+      );
+    });
+
     var label = el.querySelector(".sel-color");
 
     if (label) {
-      label.textContent = color;
+      label.textContent = slide.color;
     }
   }
 
+  /* ---------- Troca manual ---------- */
+
   function showCardColor(el, sw) {
-    if (!el || !sw || !el._gfSlides) return;
+    if (!el || !sw) return;
+
+    var p = prod(el.dataset.id);
+    if (!p) return;
 
     var color = sw.dataset.color;
 
-    /* Procurar a primeira fotografia dessa cor */
-    var index = el._gfSlides.findIndex(function (im) {
+    var images = getProductImages(p);
+
+    var index = images.findIndex(function (im) {
       return im.color === color;
     });
 
-    if (index >= 0) {
-      showSlide(el, index);
-    }
+    if (index < 0) return;
+
+    el._gfSlides = images;
+
+    showSlide(el, index);
   }
 
-  /* ---------- Carrossel automático de fotografias ---------- */
+  /* ---------- Carrossel automático ---------- */
 
   function startColorRotation() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
     document.querySelectorAll("#grid .card").forEach(function (el) {
       var p = prod(el.dataset.id);
       if (!p) return;
 
-      /*
-       * Reunir TODAS as fotografias deste produto.
-       * Não existe limite de quantidade.
-       */
-      var slides = p.images.filter(function (im) {
-        return im.path && im.color;
-      });
+      var slides = getProductImages(p);
 
       el._gfSlides = slides;
 
-      /* Uma fotografia não precisa de carrossel */
       if (slides.length < 2) return;
 
-      /* Evitar temporizadores duplicados */
       if (el._gfColorTimer) {
         clearInterval(el._gfColorTimer);
       }
 
-      /* Preparar todas as fotografias */
+      /* Preparar fotografias */
       slides.forEach(function (im) {
         var preload = new Image();
         preload.src = G.imgUrl(im.path);
       });
 
-      /* Identificar a fotografia actualmente apresentada */
-      var img = el.querySelector(".card-img img");
-      var currentUrl = img ? img.src : "";
+      el._gfSlideIndex = 0;
 
-      var initialIndex = slides.findIndex(function (im) {
-        return G.imgUrl(im.path) === currentUrl;
-      });
-
-      el._gfSlideIndex = initialIndex >= 0 ? initialIndex : 0;
-
-      /*
-       * Trocar automaticamente todas as fotografias,
-       * incluindo várias fotografias da mesma cor.
-       */
+      /* Carrossel independente para cada produto */
       el._gfColorTimer = window.setInterval(function () {
-        if (document.hidden) return;
-        if (el.hidden) return;
-        if (!el.isConnected) return;
+        if (document.hidden || el.hidden || !el.isConnected) return;
 
-        var next = (el._gfSlideIndex + 1) % slides.length;
+        var next = (el._gfSlideIndex + 1) % el._gfSlides.length;
 
         showSlide(el, next);
 
@@ -225,7 +218,7 @@
         (filter === "novo" ? p.is_new : p.category_slug === filter);
 
       var okColor = !colorFilter ||
-        p.images.some(function (im) {
+        getProductImages(p).some(function (im) {
           return im.color === colorFilter;
         });
 
@@ -294,7 +287,7 @@
   function buildColorChips() {
     var used = G.COLOR_LIST.filter(function (color) {
       return store.products.some(function (p) {
-        return p.images.some(function (im) {
+        return getProductImages(p).some(function (im) {
           return im.color === color;
         });
       });
@@ -460,9 +453,7 @@
     var sw = e.target.closest(".sw-b");
 
     if (sw) {
-      /* Troca manual imediata para a primeira foto dessa cor */
       showCardColor(el, sw);
-
     } else if (e.target.closest(".add")) {
       addToCart(el);
     }
@@ -562,7 +553,6 @@
     renderCart();
     applyFilter();
 
-    /* Carrossel automático apenas no catálogo */
     startColorRotation();
 
   }).catch(function (e) {
