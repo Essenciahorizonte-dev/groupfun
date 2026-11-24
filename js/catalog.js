@@ -41,6 +41,7 @@
 
   function card(p) {
     var firstColor = p.colors[0];
+
     var first = p.images.find(function (im) {
       return im.color === firstColor;
     }) || p.images[0];
@@ -91,30 +92,34 @@
       "</div></article>";
   }
 
-  /* ---------- Apresentação das cores ---------- */
+  /* ---------- Apresentação das fotografias ---------- */
 
-  function showCardColor(el, sw) {
-    if (!el || !sw) return;
-
-    var buttons = el.querySelectorAll(".sw-b");
-
-    buttons.forEach(function (b) {
-      b.setAttribute("aria-pressed", String(b === sw));
-    });
+  function showSlide(el, slideIndex) {
+    if (!el || !el._gfSlides || !el._gfSlides.length) return;
 
     var p = prod(el.dataset.id);
     if (!p) return;
 
-    var color = sw.dataset.color;
+    var slide = el._gfSlides[slideIndex];
+    if (!slide) return;
 
-    var im = p.images.find(function (i) {
-      return i.color === color;
+    el._gfSlideIndex = slideIndex;
+
+    var color = slide.color;
+
+    /* Atualizar a bolinha da cor apresentada */
+    el.querySelectorAll(".sw-b").forEach(function (b) {
+      b.setAttribute(
+        "aria-pressed",
+        String(b.dataset.color === color)
+      );
     });
 
+    /* Atualizar fotografia */
     var img = el.querySelector(".card-img img");
 
-    if (im && img) {
-      var newUrl = G.imgUrl(im.path);
+    if (img) {
+      var newUrl = G.imgUrl(slide.path);
 
       if (img.src !== newUrl) {
         img.src = newUrl;
@@ -123,6 +128,7 @@
       img.alt = p.name + " - " + color;
     }
 
+    /* Atualizar nome da cor */
     var label = el.querySelector(".sel-color");
 
     if (label) {
@@ -130,7 +136,22 @@
     }
   }
 
-  /* ---------- Carrossel automático de cores ---------- */
+  function showCardColor(el, sw) {
+    if (!el || !sw || !el._gfSlides) return;
+
+    var color = sw.dataset.color;
+
+    /* Procurar a primeira fotografia dessa cor */
+    var index = el._gfSlides.findIndex(function (im) {
+      return im.color === color;
+    });
+
+    if (index >= 0) {
+      showSlide(el, index);
+    }
+  }
+
+  /* ---------- Carrossel automático de fotografias ---------- */
 
   function startColorRotation() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -141,52 +162,52 @@
       var p = prod(el.dataset.id);
       if (!p) return;
 
-      /* Obter apenas cores que possuem fotografias */
-      var buttons = Array.from(el.querySelectorAll(".sw-b"));
-
-      buttons = buttons.filter(function (sw) {
-        return p.images.some(function (im) {
-          return im.color === sw.dataset.color;
-        });
+      /*
+       * Reunir TODAS as fotografias deste produto.
+       * Não existe limite de quantidade.
+       */
+      var slides = p.images.filter(function (im) {
+        return im.path && im.color;
       });
 
-      /* Sem pelo menos duas fotografias não há carrossel */
-      if (buttons.length < 2) return;
+      el._gfSlides = slides;
 
-      /* Evitar criar temporizadores duplicados */
+      /* Uma fotografia não precisa de carrossel */
+      if (slides.length < 2) return;
+
+      /* Evitar temporizadores duplicados */
       if (el._gfColorTimer) {
         clearInterval(el._gfColorTimer);
       }
 
-      /* Identificar a cor que está actualmente visível */
-      var active = buttons.findIndex(function (sw) {
-        return sw.getAttribute("aria-pressed") === "true";
+      /* Preparar todas as fotografias */
+      slides.forEach(function (im) {
+        var preload = new Image();
+        preload.src = G.imgUrl(im.path);
       });
 
-      el._gfColorIndex = active >= 0 ? active : 0;
+      /* Identificar a fotografia actualmente apresentada */
+      var img = el.querySelector(".card-img img");
+      var currentUrl = img ? img.src : "";
 
-      /* Preparar as fotografias para reduzir atrasos na troca */
-      buttons.forEach(function (sw) {
-        var im = p.images.find(function (item) {
-          return item.color === sw.dataset.color;
-        });
-
-        if (im) {
-          var preload = new Image();
-          preload.src = G.imgUrl(im.path);
-        }
+      var initialIndex = slides.findIndex(function (im) {
+        return G.imgUrl(im.path) === currentUrl;
       });
 
-      /* Trocar automaticamente a cada 3,5 segundos */
+      el._gfSlideIndex = initialIndex >= 0 ? initialIndex : 0;
+
+      /*
+       * Trocar automaticamente todas as fotografias,
+       * incluindo várias fotografias da mesma cor.
+       */
       el._gfColorTimer = window.setInterval(function () {
         if (document.hidden) return;
         if (el.hidden) return;
         if (!el.isConnected) return;
 
-        el._gfColorIndex =
-          (el._gfColorIndex + 1) % buttons.length;
+        var next = (el._gfSlideIndex + 1) % slides.length;
 
-        showCardColor(el, buttons[el._gfColorIndex]);
+        showSlide(el, next);
 
       }, 3500);
     });
@@ -439,26 +460,7 @@
     var sw = e.target.closest(".sw-b");
 
     if (sw) {
-      var buttons = Array.from(el.querySelectorAll(".sw-b"));
-      var index = buttons.indexOf(sw);
-
-      /* Permitir escolha manual sem desligar o carrossel */
-      if (index >= 0) {
-        var p = prod(el.dataset.id);
-
-        var availableButtons = buttons.filter(function (b) {
-          return p.images.some(function (im) {
-            return im.color === b.dataset.color;
-          });
-        });
-
-        var rotationIndex = availableButtons.indexOf(sw);
-
-        if (rotationIndex >= 0) {
-          el._gfColorIndex = rotationIndex;
-        }
-      }
-
+      /* Troca manual imediata para a primeira foto dessa cor */
       showCardColor(el, sw);
 
     } else if (e.target.closest(".add")) {
@@ -560,7 +562,7 @@
     renderCart();
     applyFilter();
 
-    /* Iniciar carrossel automático apenas no catálogo */
+    /* Carrossel automático apenas no catálogo */
     startColorRotation();
 
   }).catch(function (e) {
