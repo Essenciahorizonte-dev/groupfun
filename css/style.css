@@ -449,3 +449,257 @@ body {
   }
 }
 
+
+/* =====================================
+   GROUPFUN VIP 2 — CATÁLOGO PROFISSIONAL
+   ===================================== */
+
+/* Grelha de produtos */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Cartão */
+.card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--gf-border);
+  border-radius: 3px;
+  background: var(--paper);
+}
+
+/* Fotografia */
+.card-img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--soft);
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Informações */
+.card-b {
+  padding: 14px;
+  gap: 9px;
+}
+
+.card-b h3 {
+  font-size: 1rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.card-b .muted {
+  font-size: .78rem;
+}
+
+.price {
+  font-size: 1.15rem;
+  margin: 2px 0;
+}
+
+/* Cores dos produtos */
+.sw {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.sw-b {
+  width: 23px;
+  height: 23px;
+  min-width: 23px;
+  border-radius: 50%;
+  border: 1px solid #888;
+}
+
+.sw-b[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--paper),
+              0 0 0 3px var(--ink);
+}
+
+.sel-color {
+  font-size: .8rem;
+}
+
+/* Quantidade e botão */
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.row .q {
+  width: 65px;
+  flex: none;
+}
+
+.row .btn {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 8px;
+  font-size: .9rem;
+}
+
+/* =====================================
+   TELEMÓVEIS
+   ===================================== */
+
+@media (max-width: 700px) {
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding-bottom: 2rem;
+  }
+
+  .card {
+    border-width: 1px;
+  }
+
+  .card-img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .card-b {
+    padding: 10px;
+    gap: 7px;
+  }
+
+  .card-b h3 {
+    font-size: .88rem;
+  }
+
+  .card-b .muted {
+    font-size: .72rem;
+  }
+
+  .price {
+    font-size: 1rem;
+  }
+
+  .sw {
+    gap: 7px;
+  }
+
+  .sw-b {
+    width: 21px;
+    height: 21px;
+    min-width: 21px;
+  }
+
+  .sw-b[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--paper),
+                0 0 0 3px var(--ink);
+  }
+
+  .sel-color {
+    font-size: .72rem;
+  }
+
+  .row {
+    gap: 6px;
+  }
+
+  .row .q {
+    width: 48px;
+  }
+
+  .row .btn {
+    padding: 9px 5px;
+    font-size: .78rem;
+  }
+
+  .row .q input {
+    padding: 8px 5px;
+    min-width: 0;
+  }
+
+  /* Filtros organizados */
+  .tools {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .tools > * {
+    min-width: 0;
+  }
+
+  .chips {
+    gap: 7px;
+    margin-bottom: 1rem;
+  }
+
+  .chip {
+    font-size: .8rem;
+    padding: 8px 11px;
+    min-height: 38px;
+  }
+
+  /* Imagens da página inicial */
+  .hero-carousel {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hero-carousel img,
+  .hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .color-mini-grid {
+    gap: 12px;
+  }
+
+  .news-grid {
+    gap: 12px;
+  }
+}
+
+/* Telemóveis muito estreitos */
+@media (max-width: 360px) {
+  .grid {
+    gap: 10px;
+  }
+
+  .card-b {
+    padding: 8px;
+  }
+
+  .card-b h3 {
+    font-size: .82rem;
+  }
+
+  .row .btn {
+    font-size: .72rem;
+  }
+}
+
+/* Computadores */
+@media (min-width: 701px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .card-b {
+    padding: 16px;
+  }
+}
