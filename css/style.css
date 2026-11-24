@@ -929,3 +929,49 @@ body {
 .sw { gap: 10px; }
 .sw-b { position: relative; touch-action: manipulation; }
 .sw-b::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; }
+/* AJUSTE FINAL — telemóvel */
+@media (max-width: 700px) {
+  /* Menu */
+  .hd-in { min-height: 56px !important; padding: 0 16px !important; gap: 12px !important; }
+  .burger { min-height: 38px !important; padding: 6px 14px !important; font-size: .85rem !important; }
+  .nav { padding: 4px 16px 10px !important; }
+  .nav a { padding: 12px 0 !important; margin: 0 !important; font-size: .95rem !important; }
+
+  /* Catálogo: 2 produtos por linha */
+  main.wrap { padding-left: 12px !important; padding-right: 12px !important; }
+  .page-t { font-size: 1.9rem !important; margin: 14px 0 10px !important; }
+  .tools { gap: 8px !important; margin-bottom: 10px !important; }
+  .chips { gap: 6px !important; margin-bottom: 10px !important; }
+  .chip { font-size: .75rem !important; padding: 6px 10px !important; min-height: 32px !important; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; padding-bottom: 28px !important; }
+
+  /* Cartão compacto */
+  .card-img { aspect-ratio: 4 / 5 !important; }
+  .card-img img { padding: 4px !important; }
+  .card-b { padding: 8px !important; gap: 4px !important; }
+  .card-b .muted { font-size: .68rem !important; margin: 0 !important; }
+  .card-b h3 { font-size: .82rem !important; line-height: 1.25 !important; }
+  .price { font-size: .9rem !important; margin: 0 !important; }
+  .sel-color { font-size: .68rem !important; margin: 0 !important; }
+  .card .f { font-size: .68rem !important; }
+  .card select, .card input { font-size: .8rem !important; min-height: 32px !important; padding: 4px 6px !important; }
+  .row { gap: 6px !important; }
+  .row .q { width: 52px !important; }
+  .row .btn { font-size: .75rem !important; padding: 6px 4px !important; min-height: 32px !important; }
+  .msg-line { font-size: .68rem !important; margin: 0 !important; min-height: 0 !important; }
+
+  .tools input, .tools .btn { min-height: 38px !important; font-size: .85rem !important; padding: 6px 10px !important; }
+  .tools .f span { font-size: .75rem !important; }
+  .chip .color-swatch { width: 12px !important; height: 12px !important; }
+}
+
+/* Bolinhas de cor: 12px (a área de toque continua confortável) */
+.sw { gap: 10px !important; margin: 2px 0 !important; }
+.sw-b {
+  width: 12px !important; height: 12px !important;
+  min-width: 12px !important; min-height: 12px !important;
+  border: 1px solid #888 !important;
+  position: relative; touch-action: manipulation;
+}
+.sw-b::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; }
+.sw-b[aria-pressed="true"] { box-shadow: 0 0 0 2px #fff, 0 0 0 3px #111 !important; }
