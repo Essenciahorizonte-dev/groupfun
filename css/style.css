@@ -1008,3 +1008,81 @@ body {
   object-fit: contain; /* ou 'cover' depois de cortares bem as margens brancas */
   display: block;
 }
+
+/* =========================================
+   GROUPFUN — CORRECÇÃO DE DESTAQUES E NOVIDADES
+   ========================================= */
+
+/* 1. IMAGENS DE DESTAQUE — PREENCHER TODO O ESPAÇO */
+
+.hero,
+.hero-slider,
+.hero-carousel,
+.hero-slides {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+.hero img,
+.hero-slider img,
+.hero-carousel img,
+.hero-slides img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Remover espaços entre imagens e respectivos contentores */
+.hero-slide,
+.hero-item,
+.hero-carousel-item {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 2. NOVIDADES — GARANTIR VISIBILIDADE NO TELEMÓVEL */
+
+@media (max-width: 768px) {
+
+  .new-arrivals,
+  .novidades,
+  .new-products,
+  .section-novidades {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .new-arrivals .grid,
+  .novidades .grid,
+  .new-products .grid,
+  .section-novidades .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  .new-arrivals img,
+  .novidades img,
+  .new-products img,
+  .section-novidades img {
+    display: block !important;
+    max-width: 100%;
+    height: auto;
+    visibility: visible;
+    opacity: 1;
+  }
+}
