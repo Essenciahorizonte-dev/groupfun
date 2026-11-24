@@ -142,11 +142,38 @@
       '<a href="' + C.INSTAGRAM_URL + '" target="_blank" rel="noopener">Instagram ' + C.INSTAGRAM_HANDLE + "</a></div>" +
       '<div><p class="ft-h">Páginas</p>' + nav + "</div></div>" +
       '<div class="wrap ft-end muted small">© ' + new Date().getFullYear() + " GROUPFUN</div>";
-    var b = document.querySelector(".burger"), n = document.getElementById("nav");
-    b.addEventListener("click", function () {
-      var o = n.classList.toggle("open");
-      b.setAttribute("aria-expanded", String(o));
-    });
+    
+var b = document.querySelector(".burger");
+var n = document.getElementById("nav");
+
+function closeMenu() {
+  n.classList.remove("open");
+  b.setAttribute("aria-expanded", "false");
+}
+
+b.addEventListener("click", function () {
+  var o = n.classList.toggle("open");
+  b.setAttribute("aria-expanded", String(o));
+});
+
+n.addEventListener("click", function (event) {
+  if (event.target.closest("a")) {
+    closeMenu();
+  }
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeMenu();
+  }
+});
+
+window.addEventListener("resize", function () {
+  if (window.innerWidth > 700) {
+    closeMenu();
+  }
+});
+
     if (sb) sb.from("site_images").select("path").eq("kind", "logo").order("sort").limit(1).maybeSingle().then(function (r) {
       if (r.error || !r.data) return;
       var src = imgUrl(r.data.path);
