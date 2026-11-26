@@ -1664,3 +1664,40 @@ textarea {
     padding: 7px;
   }
 }
+
+/* GROUPFUN — CORREÇÃO DEFINITIVA DO ECRÃ DE BOAS-VINDAS */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body > #welcome-gf {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 100dvh !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  z-index: 2147483647 !important;
+  background: #000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+body > #welcome-gf span {
+  color: #fff !important;
+  text-align: center;
+  font-size: clamp(28px, 8vw, 48px);
+  font-weight: 800;
+  letter-spacing: 4px;
+}
