@@ -96,21 +96,66 @@
     $("#login").hidden = true;
     $("#app").hidden = false;
 
-    // Criar boas-vindas
+    
+    // GROUPFUN — Boas-vindas
     var welcome = document.getElementById("welcome-gf");
 
     if (!welcome) {
       welcome = document.createElement("div");
       welcome.id = "welcome-gf";
-
-      var name = document.createElement("span");
-      name.textContent = "Kelven";
-
-      welcome.appendChild(name);
-      document.body.appendChild(welcome);
-    } else if (welcome.parentElement !== document.body) {
       document.body.appendChild(welcome);
     }
+
+    welcome.innerHTML = `
+      <div style="
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        gap:14px;
+        width:100%;
+      ">
+        <div style="
+          font-size:clamp(24px,6vw,34px);
+          font-weight:500;
+          letter-spacing:2px;
+          color:#fff;
+        ">Bem-vindo</div>
+
+        <div style="
+          font-size:clamp(38px,10vw,54px);
+          font-weight:800;
+          letter-spacing:5px;
+          color:#fff;
+        ">KELVEN</div>
+
+        <div style="
+          font-size:11px;
+          letter-spacing:3px;
+          color:#aaa;
+          margin-top:8px;
+        ">GROUPFUN · GESTÃO DA LOJA</div>
+      </div>
+    `;
+
+    welcome.style.cssText =
+      "position:fixed;" +
+      "inset:0;" +
+      "z-index:2147483647;" +
+      "background:#000;" +
+      "color:#fff;" +
+      "display:flex;" +
+      "align-items:center;" +
+      "justify-content:center;" +
+      "width:100%;" +
+      "height:100vh;" +
+      "min-height:100dvh;" +
+      "margin:0;" +
+      "padding:0;" +
+      "box-sizing:border-box;" +
+      "overflow:hidden;";
+
 
         
     // Ecrã de boas-vindas em ecrã inteiro
