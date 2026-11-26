@@ -138,21 +138,54 @@
 
   /* ---------- Login ---------- */
 
-  $("#login").addEventListener("submit", async function (e) {
-    e.preventDefault();
 
+/* ---------- Login corrigido ---------- */
+
+$("#login").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  var email = $("#email").value.trim();
+  var password = $("#pass").value;
+  var btn = $("#login").querySelector('button[type="submit"]');
+
+  if (!email || !password) {
+    return say("Preenche o email e a palavra-passe.", true);
+  }
+
+  btn.disabled = true;
+  btn.textContent = "A verificar...";
+
+  try {
     var r = await sb.auth.signInWithPassword({
-      email: $("#email").value.trim(),
-      password: $("#pass").value
+      email: email,
+      password: password
     });
 
     if (r.error) {
-      return say("Email ou palavra-passe incorrectos.", true);
+      console.error("ERRO DE LOGIN:", r.error);
+      throw r.error;
     }
 
+    // Mantém o email preenchido
+    $("#email").value = email;
     $("#pass").value = "";
+
     await enter(r.data.user);
-  });
+
+  } catch (err) {
+    console.error("ERRO COMPLETO:", err);
+
+    say(
+      "Não foi possível entrar: " +
+      (err.message || String(err)),
+      true
+    );
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Entrar";
+  }
+});
 
   /* ---------- Terminar sessão ---------- */
 
