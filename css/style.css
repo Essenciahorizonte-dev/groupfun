@@ -1097,3 +1097,80 @@ body{font-size:14px;line-height:1.5}h1,h2,h3,.page-t,.logo-t,.price,.gf-cover-ti
 .card{border:0!important}.card-img{border:0!important}.card-b{padding:.7rem 0!important}
 /* As cores continuam nas amostras de cada produto; não aparecem como filtros do catálogo. */
 .color-filter{display:none!important}
+
+/* GROUPFUN — organização das imagens */
+
+/* Duas referências lado a lado, inclusive no telemóvel */
+.gf-image-rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.gf-image-rail figure {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.gf-image-rail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+/* Colecção: mostrar a fotografia inteira */
+.gf-home .cat img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: #fff;
+}
+
+/* Catálogo: não deixar uma coluna vazia */
+.grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.card,
+.card-img {
+  border: 0 !important;
+  padding: 0;
+  margin: 0;
+}
+
+.card-img {
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Cabeçalho administrativo GROUPFUN */
+.admin-brandbar {
+  background: #050505;
+  color: #fff;
+  width: 100%;
+  padding: 24px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+  text-align: center;
+}
+
