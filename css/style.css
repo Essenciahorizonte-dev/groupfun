@@ -1174,3 +1174,362 @@ body{font-size:14px;line-height:1.5}h1,h2,h3,.page-t,.logo-t,.price,.gf-cover-ti
   text-align: center;
 }
 
+
+/* =========================================
+   GROUPFUN VIP — ORGANIZAÇÃO E IMAGENS
+   CORREÇÃO RESPONSIVA
+========================================= */
+
+/* Evitar larguras fora do ecrã */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.adm,
+#app,
+.panel {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.adm {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Organizar cabeçalho administrativo */
+.admin-brandbar {
+  width: auto;
+  max-width: none;
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 18px 20px;
+  overflow: hidden;
+}
+
+.admin-brand {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.admin-brand small {
+  text-align: right;
+}
+
+/* Cabeçalho do painel */
+.adm-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.adm-top > * {
+  min-width: 0;
+}
+
+/* Separadores organizados */
+.tabs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.tabs .btn {
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* Painéis administrativos */
+.panel {
+  width: 100%;
+  padding: clamp(14px, 3vw, 28px);
+  margin: 18px 0;
+  overflow: hidden;
+}
+
+.site-manage {
+  width: 100%;
+  min-width: 0;
+}
+
+.site-manage > * {
+  min-width: 0;
+}
+
+/* Fotografias no painel */
+.thumbs {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(min(125px, 100%), 1fr));
+  gap: 12px;
+}
+
+.thumb {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--gf-border);
+  padding: 8px;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f1f1ef;
+}
+
+.thumb button {
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* Tabelas sem ultrapassar o ecrã */
+.tbl-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tbl {
+  min-width: 650px;
+}
+
+/* Fotografias dos produtos:
+   mostrar a fotografia inteira, sem cortes */
+.card-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: #f1f1ef;
+}
+
+.card-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Fotografias das categorias */
+.cat img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f1f1ef;
+}
+
+/* Imagens de destaque */
+.imgs figure {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: #f1f1ef;
+}
+
+.imgs img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Imagens do carrossel principal */
+.hero-carousel {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: #111;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Imagens de novidades */
+.news-grid {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.news-grid figure {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: #f1f1ef;
+}
+
+.news-grid img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Imagens por cor */
+.color-mini-grid {
+  min-width: 0;
+}
+
+.color-mini img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f1f1ef;
+}
+
+/* Formulários */
+#pform,
+.f,
+.two {
+  min-width: 0;
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* Botões e ações */
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.acts .btn {
+  max-width: 100%;
+}
+
+/* =========================================
+   VERSÃO TELEMÓVEL
+========================================= */
+
+@media (max-width: 700px) {
+
+  .adm {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .admin-brandbar {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 16px 12px;
+  }
+
+  .admin-brand {
+    gap: 10px;
+    font-size: .85rem;
+  }
+
+  .admin-brand span {
+    flex: none;
+  }
+
+  .admin-brand small {
+    font-size: .58rem;
+  }
+
+  .adm-top {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .adm-top .btn {
+    width: 100%;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .tabs .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  .panel {
+    padding: 15px;
+    margin: 14px 0;
+  }
+
+  .site-manage {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .thumbs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .color-mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-img img {
+    max-height: 420px;
+  }
+
+  .acts {
+    flex-direction: column;
+  }
+
+  .acts .btn {
+    width: 100%;
+  }
+
+  .two {
+    grid-template-columns: 1fr;
+  }
+
+  .tbl-wrap {
+    margin: 0;
+  }
+}
+
+/* Evitar animações indesejadas */
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    transition: none;
+  }
+}
