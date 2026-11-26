@@ -895,3 +895,77 @@ $("#login").addEventListener("submit", async function (e) {
 
       say(
     
+        // Aguardar a substituição do logótipo sem perder o ficheiro antigo
+        // antes de confirmar que o novo foi guardado.
+
+      }
+
+      var nextSort = old.length
+        ? Math.max.apply(null, old.map(function (x) {
+            return Number(x.sort) || 0;
+          })) + 1
+        : 0;
+
+      var r = await sb.from("site_images").insert({
+        kind: kind,
+        path: path,
+        sort: nextSort
+      });
+
+      if (r.error) {
+        await removeFiles([path]);
+        throw r.error;
+      }
+
+      // Depois de guardar o novo logótipo, remover o antigo.
+      if (kind === "logo" && old.length) {
+        var oldLogo = old[0];
+
+        var del = await sb.from("site_images")
+          .delete()
+          .eq("id", oldLogo.id);
+
+        if (!del.error) {
+          await removeFiles([oldLogo.path]);
+        }
+      }
+
+      say(
+        kind === "logo"
+          ? "Logótipo actualizado."
+          : "Imagem adicionada."
+      );
+
+      await refresh();
+
+    } catch (err) {
+      fail(err, "Erro ao enviar");
+    }
+  });
+
+  /* ---------- Separadores ---------- */
+
+  document.querySelectorAll("[data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("[data-tab]").forEach(function (x) {
+        var active = x === b;
+
+        x.classList.toggle("btn-ghost", !active);
+
+        var section = $("#tab-" + x.dataset.tab);
+
+        if (section) {
+          section.hidden = !active;
+        }
+      });
+    });
+  });
+
+  /* ---------- Iniciar painel ---------- */
+
+  boot().catch(function (err) {
+    console.error("Erro ao iniciar GROUPFUN:", err);
+    fail(err, "Erro ao iniciar painel");
+  });
+
+})();
