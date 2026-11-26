@@ -230,7 +230,17 @@
         var del = await sb.from("site_images").delete().eq("id", old[0].id);
         if (del.error) { await removeFiles([path]); throw del.error; }
       }
-      var r = await sb.from("site_images").insert({ kind: kind, path: path, sort: Date.now() % 1000000 });
+      var nextSort = old.length
+  ? Math.max.apply(null, old.map(function (x) {
+      return Number(x.sort) || 0;
+    })) + 1
+  : 0;
+
+var r = await sb.from("site_images").insert({
+  kind: kind,
+  path: path,
+  sort: nextSort
+});
       if (r.error) { await removeFiles([path]); throw r.error; }
       say(kind === "logo" ? "Logótipo actualizado." : "Imagem adicionada."); refresh();
     } catch (err) { fail(err, "Erro ao enviar"); }
