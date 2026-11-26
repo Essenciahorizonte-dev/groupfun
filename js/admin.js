@@ -19,14 +19,47 @@
     var s = await sb.auth.getSession();
     if (s.data.session) await enter(s.data.session.user); else $("#login").hidden = false;
   }
-  async function enter(user) {
-    var r = await sb.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
-    if (r.error || !r.data) {
-      await sb.auth.signOut();
-      $("#login").hidden = false; $("#app").hidden = true;
-      say("Esta conta não tem permissão de administrador.", true);
-      return;
-    }
+  
+async function enter(user) {
+  var r = await sb.from("admins")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (r.error || !r.data) {
+    await sb.auth.signOut();
+    $("#login").hidden = false;
+    $("#app").hidden = true;
+    say("Esta conta não tem permissão de administrador.", true);
+    return;
+  }
+
+  // Esconder o painel durante a entrada
+  $("#login").hidden = true;
+  $("#app").hidden = true;
+
+  // Criar o ecrã de boas-vindas
+  var welcome = document.getElementById("welcome-gf");
+
+  if (!welcome) {
+    welcome = document.createElement("div");
+    welcome.id = "welcome-gf";
+    welcome.innerHTML = "<span>Kelven</span>";
+    document.body.appendChild(welcome);
+  }
+
+  welcome.style.display = "flex";
+
+  // Carregar os dados enquanto aparece o ecrã preto
+  await refresh();
+
+  // Após 2,3 segundos, abrir o painel
+  setTimeout(function () {
+    welcome.style.display = "none";
+    $("#app").hidden = false;
+  }, 2300);
+}
+
     $("#login").hidden = true; $("#app").hidden = false; var welcome=$("#welcome-gf"); if(welcome){welcome.classList.add("show");setTimeout(function(){welcome.classList.remove("show");},3000);}
     await refresh();
   }
