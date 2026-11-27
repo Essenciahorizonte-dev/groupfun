@@ -192,28 +192,23 @@
 
 
 
-    welcome.querySelector("span").style.cssText =
-      "font-size:32px;" +
-      "font-weight:700;" +
-      "letter-spacing:4px;" +
-      "color:#fff;";
+    
+    // Esconder boas-vindas após 2,3 segundos
+    var welcomeTimer = setTimeout(function () {
+      welcome.style.display = "none";
+      $("#app").hidden = false;
+    }, 2300);
 
     try {
       await refresh();
     } catch (err) {
+      clearTimeout(welcomeTimer);
       welcome.style.display = "none";
       $("#app").hidden = false;
       fail(err, "Erro ao carregar painel");
       return;
     }
 
-    await new Promise(function (resolve) {
-      setTimeout(resolve, 2300);
-    });
-
-    welcome.style.display = "none";
-    $("#app").hidden = false;
-  }
 
   /* ---------- Login ---------- */
 
