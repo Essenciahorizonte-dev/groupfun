@@ -139,75 +139,42 @@
       </div>
     `;
 
-    welcome.style.cssText =
-      "position:fixed;" +
-      "inset:0;" +
-      "z-index:2147483647;" +
-      "background:#000;" +
-      "color:#fff;" +
-      "display:flex;" +
-      "align-items:center;" +
-      "justify-content:center;" +
-      "width:100%;" +
-      "height:100vh;" +
-      "min-height:100dvh;" +
-      "margin:0;" +
-      "padding:0;" +
-      "box-sizing:border-box;" +
-      "overflow:hidden;";
+    var welcomeName = welcome.querySelector("span");  
 
-
-        
-    // Ecrã de boas-vindas em ecrã inteiro
-    Object.assign(welcome.style, {
-      position: "fixed",
-      inset: "0",
-      width: "100%",
-      height: "100%",
-      minWidth: "100%",
-      minHeight: "100vh",
-      margin: "0",
-      padding: "0",
-      boxSizing: "border-box",
-      transform: "none",
-      borderRadius: "0",
-      zIndex: "2147483647",
-      background: "#000",
-      color: "#fff",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      overflow: "hidden"
-    });
-
-    var welcomeName = welcome.querySelector("span");
-
-    welcomeName.style.cssText =
-      "font-family:Archivo,sans-serif;" +
-      "font-size:clamp(28px,8vw,48px);" +
-      "font-weight:800;" +
-      "letter-spacing:4px;" +
-      "color:#fff;" +
-      "text-align:center;";
+welcomeName.style.cssText =  
+  "font-family:Archivo,sans-serif;" +  
+  "font-size:clamp(28px,8vw,48px);" +  
+  "font-weight:800;" +  
+  "letter-spacing:4px;" +  
+  "color:#fff;" +  
+  "text-align:center;";  
 
 
 
-    
-    // Esconder boas-vindas após 2,3 segundos
-    var welcomeTimer = setTimeout(function () {
-      welcome.style.display = "none";
-      $("#app").hidden = false;
-    }, 2300);
+welcome.querySelector("span").style.cssText =  
+  "font-size:32px;" +  
+  "font-weight:700;" +  
+  "letter-spacing:4px;" +  
+  "color:#fff;";  
 
-    try {
-      await refresh();
-    } catch (err) {
-      clearTimeout(welcomeTimer);
-      welcome.style.display = "none";
-      $("#app").hidden = false;
-      fail(err, "Erro ao carregar painel");
-      return;
-    }
+try {  
+  await refresh();  
+} catch (err) {  
+  welcome.style.display = "none";  
+  $("#app").hidden = false;  
+  fail(err, "Erro ao carregar painel");  
+  return;  
+}  
+
+await new Promise(function (resolve) {  
+  setTimeout(resolve, 2300);  
+});  
+
+welcome.style.display = "none";  
+$("#app").hidden = false;
+
+}
+
 
 
   /* ---------- Login ---------- */
