@@ -112,27 +112,38 @@
       document.body.appendChild(welcome);
     }
 
-    welcome.style.cssText =
-      "position:fixed !important;" +
-      "left:0 !important;" +
-      "top:0 !important;" +
-      "right:0 !important;" +
-      "bottom:0 !important;" +
-      "width:100vw !important;" +
-      "height:100vh !important;" +
-      "min-width:100vw !important;" +
-      "min-height:100dvh !important;" +
-      "max-width:none !important;" +
-      "max-height:none !important;" +
-      "box-sizing:border-box !important;" +
-      "margin:0 !important;" +
-      "padding:0 !important;" +
-      "z-index:2147483647;" +
-      "background:#000;" +
+    
+    // Ecrã de boas-vindas em ecrã inteiro
+    Object.assign(welcome.style, {
+      position: "fixed",
+      inset: "0",
+      width: "100%",
+      height: "100%",
+      minWidth: "100%",
+      minHeight: "100vh",
+      margin: "0",
+      padding: "0",
+      boxSizing: "border-box",
+      transform: "none",
+      borderRadius: "0",
+      zIndex: "2147483647",
+      background: "#000",
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "hidden"
+    });
+
+    var welcomeName = welcome.querySelector("span");
+
+    welcomeName.style.cssText =
+      "font-family:Archivo,sans-serif;" +
+      "font-size:clamp(28px,8vw,48px);" +
+      "font-weight:800;" +
+      "letter-spacing:4px;" +
       "color:#fff;" +
-      "display:flex;" +
-      "align-items:center;" +
-      "justify-content:center;";
+      "text-align:center;";
 
     welcome.querySelector("span").style.cssText =
       "font-size:32px;" +
